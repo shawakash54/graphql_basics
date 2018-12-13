@@ -1,5 +1,6 @@
-import {GraphQLObjectType, GraphQLSchema, GraphQLString} from 'graphql'
+import {GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLID, GraphQLInt} from 'graphql'
 import _ from 'lodash'
+import logger from '../../lib/logger'
 
 
 //Dummy Data for graphql
@@ -10,15 +11,32 @@ var dummy_books = [
 ]
 
 
+//Dummy data for authors
+var dummy_authors = [
+  {name: 'Shaw', age: 23, id: '1'},
+  {name: 'Kundra', age: 28, id: '2'},
+  {name: 'Luke', age: 58, id: '3'}
+]
+
+
 const BookType = new GraphQLObjectType({
   name: 'Book',
   fields: () => ({
-    id: {type: GraphQLString},
+    id: {type: GraphQLID},
     name: {type: GraphQLString},
     genre: {type: GraphQLString}
   })
 })
 
+
+const AuthorType = new GraphQLObjectType({
+  name: 'Author',
+  fields: () => ({
+    id: {type: GraphQLID},
+    name: {type: GraphQLString},
+    age: {type: GraphQLInt}
+  })
+})
 
 //Defining root queries. While defining root queries we don't take fields inside a function but only as a parameter,
 // as we are not bothered about the ordering of the attributes.
@@ -47,10 +65,22 @@ const RootQuery = new GraphQLObjectType({
   fields: {
     book: {
       type: BookType,
-      args: {id: {type: GraphQLString}},
+      args: {id: {type: GraphQLID}},
       resolve(parent, args){
         //code to get data from db/ source
-        return _.find(dummy_books, {id: args.id})
+        var data = _.find(dummy_books, {id: args.id})
+        logger.info(`Fetching Book data`, data)
+        return data
+      }
+    },
+    author: {
+      type: AuthorType,
+      args: {id: {type: GraphQLID}},
+      resolve(parent, args){
+        //code to get author details
+        var data = _.find(dummy_authors, {id: args.id})
+        logger.info(`Fetching Author data`, data)
+        return data
       }
     }
   }
