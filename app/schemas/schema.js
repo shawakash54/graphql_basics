@@ -4,10 +4,11 @@ import logger from '../../lib/logger'
 
 
 //Dummy Data for graphql
+//authorId relates books to authors.
 var dummy_books = [
-  {name: 'Learn', genre: 'cs', id: '1'},
-  {name: 'practise', genre: 'hw', id: '2'},
-  {name: 'All over again', genre: 'got', id: '3'}
+  {name: 'Learn', genre: 'cs', id: '1', authorId: '2'},
+  {name: 'practise', genre: 'hw', id: '2', authorId: '3'},
+  {name: 'All over again', genre: 'got', id: '3', authorId: '1'}
 ]
 
 
@@ -24,7 +25,13 @@ const BookType = new GraphQLObjectType({
   fields: () => ({
     id: {type: GraphQLID},
     name: {type: GraphQLString},
-    genre: {type: GraphQLString}
+    genre: {type: GraphQLString},
+    author: {
+      type: AuthorType,
+      resolve(parent, args){
+        
+      }
+    }
   })
 })
 
