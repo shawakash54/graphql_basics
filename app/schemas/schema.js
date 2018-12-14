@@ -2,6 +2,7 @@ import {GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLID, GraphQLInt, 
 import _ from 'lodash'
 import logger from '../../lib/logger'
 import {BOOK_TYPE, AUTHOR_TYPE} from '../../lib/constants'
+import {Book, Author} from '../models'
 
 
 //Dummy Data for graphql
@@ -34,7 +35,7 @@ const BookType = new GraphQLObjectType({
       type: AuthorType,
       resolve(parent, args){
         logger.info(`parent for ${BOOK_TYPE} : `, JSON.stringify(parent))
-        return _.find(dummy_authors, {id: parent.authorId})
+        //return _.find(dummy_authors, {id: parent.authorId})
       }
     }
   })
@@ -51,7 +52,7 @@ const AuthorType = new GraphQLObjectType({
       type: new GraphQLList(BookType),     //the type won't be BookType, because an author has a list of BookType and BookType signifies a single book
       resolve(parent, args){
         logger.info(`parent for ${AUTHOR_TYPE}: `, JSON.stringify(parent))
-        return _.filter(dummy_books, {authorId: parent.id})   //filter is for filering multiple things
+        //return _.filter(dummy_books, {authorId: parent.id})   //filter is for filering multiple things
       }
     }
   })
@@ -87,7 +88,7 @@ const RootQuery = new GraphQLObjectType({
       args: {id: {type: GraphQLID}},
       resolve(parent, args){
         //code to get data from db/ other sources
-        var data = _.find(dummy_books, {id: args.id})
+        //var data = _.find(dummy_books, {id: args.id})
         logger.info(`Fetching ${BOOK_TYPE} data`, JSON.stringify(data))
         return data
       }
@@ -97,7 +98,7 @@ const RootQuery = new GraphQLObjectType({
       args: {id: {type: GraphQLID}},
       resolve(parent, args){
         //code to get author details
-        var data = _.find(dummy_authors, {id: args.id})
+        //var data = _.find(dummy_authors, {id: args.id})
         logger.info(`Fetching ${AUTHOR_TYPE} data`, JSON.stringify(data))
         return data
       }
@@ -106,14 +107,14 @@ const RootQuery = new GraphQLObjectType({
       type: new GraphQLList(BookType),
       resolve(parent, args){
         //code to get list of all books
-        return dummy_books
+        //return dummy_books
       }
     },
     authors: {
       type: new GraphQLList(AuthorType),
       resolve(parent, args){
         //code to get list of all authors
-        return dummy_authors
+        //return dummy_authors
       }
     }
   }

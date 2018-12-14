@@ -17,7 +17,9 @@ Type relations is bascially telling GraphQL the exact relations between the diff
 GraphQLObject type. Like in case, a book has an author and a author has many books.
 
 
-## Please create environment variables for your mongodb username and passoword. Environment variables used are:
+##Please create environment variables for your mongodb username and passoword. Environment variables used are:
  username: GRAPHQL_MONGODB_USER
  password: GRAPHQL_MONGO_PASSWORD
 
+##Mutations in GraphQL
+Mutation are like adding data, editing data, deleting data.
