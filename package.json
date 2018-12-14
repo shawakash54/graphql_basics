@@ -27,6 +27,7 @@
     "graphql": "^14.0.2",
     "lodash": "^4.17.4",
     "log4js": "^2.4.1",
+    "mongoose": "^5.3.16",
     "nodemon": "^1.18.8"
   },
   "devDependencies": {

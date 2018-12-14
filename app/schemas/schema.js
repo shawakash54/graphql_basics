@@ -1,6 +1,7 @@
 import {GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLID, GraphQLInt, GraphQLList} from 'graphql'
 import _ from 'lodash'
 import logger from '../../lib/logger'
+import {BOOK_TYPE, AUTHOR_TYPE} from '../../lib/constants'
 
 
 //Dummy Data for graphql
@@ -32,7 +33,7 @@ const BookType = new GraphQLObjectType({
     author: {
       type: AuthorType,
       resolve(parent, args){
-        logger.info(`parent for booktype : `, JSON.stringify(parent))
+        logger.info(`parent for ${BOOK_TYPE} : `, JSON.stringify(parent))
         return _.find(dummy_authors, {id: parent.authorId})
       }
     }
@@ -49,7 +50,7 @@ const AuthorType = new GraphQLObjectType({
     books: {
       type: new GraphQLList(BookType),     //the type won't be BookType, because an author has a list of BookType and BookType signifies a single book
       resolve(parent, args){
-        logger.info(`parent for author type: `, JSON.stringify(parent))
+        logger.info(`parent for ${AUTHOR_TYPE}: `, JSON.stringify(parent))
         return _.filter(dummy_books, {authorId: parent.id})   //filter is for filering multiple things
       }
     }
@@ -87,7 +88,7 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args){
         //code to get data from db/ other sources
         var data = _.find(dummy_books, {id: args.id})
-        logger.info(`Fetching Book data`, JSON.stringify(data))
+        logger.info(`Fetching ${BOOK_TYPE} data`, JSON.stringify(data))
         return data
       }
     },
@@ -97,7 +98,7 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args){
         //code to get author details
         var data = _.find(dummy_authors, {id: args.id})
-        logger.info(`Fetching Author data`, JSON.stringify(data))
+        logger.info(`Fetching ${AUTHOR_TYPE} data`, JSON.stringify(data))
         return data
       }
     },
