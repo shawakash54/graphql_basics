@@ -1,4 +1,13 @@
 # GraphQL
+With GraphQL we don't need to have multiple end points for a particular resource depending on a client.
+Concept used by NetFlix was to have a backends for frontends. It can now be replaced by a single endpoint - /graphql
+We also don't need to make multiple requests for resources anymore. We can fetch in one request only.
+Also, there's no need to fetch redundant data anymore, we can only fetch data we want to have.
+Since it also exposes a documentation for the resources available and the various types available under it, it is much easier for the
+frontend developers to dive in.
+
+GraphQL is a facade infront of our databases, cache, and services. The difficulty of microservices architecture can be well hidden behind
+a single interface.
 
 #### Node version used by me: 8.11.3
 #### Express version used by me: 4.16.4
@@ -23,3 +32,12 @@ GraphQLObject type. Like in case, a book has an author and a author has many boo
 
 ## Mutations in GraphQL
 Mutation are like adding data, editing data, deleting data.
+
+For mutations, queries will be like:
+
+mutation{
+  addAuthor(name:"Shaw", age: 23){
+    name
+    age
+  }
+}

@@ -7,22 +7,22 @@ import {Book, Author} from '../models'
 
 //Dummy Data for graphql
 //authorId relates books to authors.
-var dummy_books = [
-  {name: 'Learn', genre: 'cs', id: '1', authorId: '2'},
-  {name: 'practise', genre: 'hw', id: '2', authorId: '3'},
-  {name: 'All over again', genre: 'got', id: '3', authorId: '1'},
-  {name: 'It\'s okay to fail', genre: 'cs', id: '4', authorId: '1'},
-  {name: 'try again', genre: 'hw', id: '5', authorId: '3'},
-  {name: 'Your time is now', genre: 'got', id: '6', authorId: '1'}
-]
+// var dummy_books = [
+//   {name: 'Learn', genre: 'cs', id: '1', authorId: '2'},
+//   {name: 'practise', genre: 'hw', id: '2', authorId: '3'},
+//   {name: 'All over again', genre: 'got', id: '3', authorId: '1'},
+//   {name: 'It\'s okay to fail', genre: 'cs', id: '4', authorId: '1'},
+//   {name: 'try again', genre: 'hw', id: '5', authorId: '3'},
+//   {name: 'Your time is now', genre: 'got', id: '6', authorId: '1'}
+// ]
 
 
 //Dummy data for authors
-var dummy_authors = [
-  {name: 'Shaw', age: 23, id: '1'},
-  {name: 'Kundra', age: 28, id: '2'},
-  {name: 'Luke', age: 58, id: '3'}
-]
+// var dummy_authors = [
+//   {name: 'Shaw', age: 23, id: '1'},
+//   {name: 'Kundra', age: 28, id: '2'},
+//   {name: 'Luke', age: 58, id: '3'}
+// ]
 
 
 const BookType = new GraphQLObjectType({
@@ -121,7 +121,47 @@ const RootQuery = new GraphQLObjectType({
 })
 
 
+//defining mutations
+const Mutation =  new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    addAuthor: {
+      type: AuthorType,
+      args: {
+        name: {type: GraphQLString},
+        age: {type: GraphQLInt}
+      },
+      resolve(parent, args){
+        //we will store the data in the database.
+        let author = new Author({
+          name: args.name,
+          age: args.age
+        })
+        return author.save()
+      }
+    },
+    addBook: {
+      type: BookType,
+      args: {
+        name: {type: GraphQLString},
+        genre: {type: GraphQLString},
+        authorId: {type: GraphQLID}
+      },
+      resolve(parent, args){
+        //we will store the data in the database
+        let book = new Book({
+          name: args.name,
+          genre: args.genre,
+          authorId: args.authorId
+        })
+        return book.save()
+      }
+    }
+  }
+})
+
 //export the schema
 export default new GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
+  mutation: Mutation
 })
