@@ -27,17 +27,26 @@ GraphQLObject type. Like in case, a book has an author and a author has many boo
 
 
 ## Please create environment variables for your mongodb username and passoword. Environment variables used are:
- username: GRAPHQL_MONGODB_USER
- password: GRAPHQL_MONGO_PASSWORD
+ `username: GRAPHQL_MONGODB_USER` 
+ 
+ `password: GRAPHQL_MONGO_PASSWORD `
 
 ## Mutations in GraphQL
 Mutation are like adding data, editing data, deleting data.
 
 For mutations, queries will be like:
 
-mutation{
+`mutation{
   addAuthor(name:"Shaw", age: 23){
     name
     age
   }
-}
+}`
+
+`mutation{
+  addBook(name:"Work", genre: "wk", authorId: "5c167b0ec017703985be17aa"){
+    name
+    genre
+    id
+  }
+}`

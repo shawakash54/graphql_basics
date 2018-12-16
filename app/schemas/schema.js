@@ -1,4 +1,4 @@
-import {GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLID, GraphQLInt, GraphQLList} from 'graphql'
+import {GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull} from 'graphql'
 import _ from 'lodash'
 import logger from '../../lib/logger'
 import {BOOK_TYPE, AUTHOR_TYPE} from '../../lib/constants'
@@ -36,6 +36,7 @@ const BookType = new GraphQLObjectType({
       resolve(parent, args){
         logger.info(`parent for ${BOOK_TYPE} : `, JSON.stringify(parent))
         //return _.find(dummy_authors, {id: parent.authorId})
+        return Author.findById(parent.authorId)
       }
     }
   })
@@ -53,6 +54,7 @@ const AuthorType = new GraphQLObjectType({
       resolve(parent, args){
         logger.info(`parent for ${AUTHOR_TYPE}: `, JSON.stringify(parent))
         //return _.filter(dummy_books, {authorId: parent.id})   //filter is for filering multiple things
+        return Book.find({authorId: parent.id})
       }
     }
   })
@@ -89,8 +91,14 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args){
         //code to get data from db/ other sources
         //var data = _.find(dummy_books, {id: args.id})
-        logger.info(`Fetching ${BOOK_TYPE} data`, JSON.stringify(data))
-        return data
+        return Book.findById(args.id, (err, bookData) => {
+          if (err)
+            logger.error(`Error: ${err}`)
+            logger.info(`Fetching ${BOOK_TYPE} data`, JSON.stringify(bookData))
+            return bookData
+        })
+        // logger.info(`Fetching ${BOOK_TYPE} data`, JSON.stringify(data))
+        // return data
       }
     },
     author: {
@@ -99,6 +107,7 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args){
         //code to get author details
         //var data = _.find(dummy_authors, {id: args.id})
+        var data = Author.findById(args.id)
         logger.info(`Fetching ${AUTHOR_TYPE} data`, JSON.stringify(data))
         return data
       }
@@ -108,6 +117,7 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args){
         //code to get list of all books
         //return dummy_books
+        return Book.find({})
       }
     },
     authors: {
@@ -115,6 +125,7 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args){
         //code to get list of all authors
         //return dummy_authors
+        return Author.find({})
       }
     }
   }
@@ -128,8 +139,8 @@ const Mutation =  new GraphQLObjectType({
     addAuthor: {
       type: AuthorType,
       args: {
-        name: {type: GraphQLString},
-        age: {type: GraphQLInt}
+        name: {type: new GraphQLNonNull(GraphQLString)},
+        age: {type: new GraphQLNonNull(GraphQLInt)}
       },
       resolve(parent, args){
         //we will store the data in the database.
@@ -143,9 +154,9 @@ const Mutation =  new GraphQLObjectType({
     addBook: {
       type: BookType,
       args: {
-        name: {type: GraphQLString},
-        genre: {type: GraphQLString},
-        authorId: {type: GraphQLID}
+        name: {type: new GraphQLNonNull(GraphQLString)},
+        genre: {type: new GraphQLNonNull(GraphQLString)},
+        authorId: {type: new GraphQLNonNull(GraphQLID)}
       },
       resolve(parent, args){
         //we will store the data in the database
