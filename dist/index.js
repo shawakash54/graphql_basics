@@ -35,6 +35,6 @@ app.use('/graphql', (0, _expressGraphql2.default)({
   graphiql: true //to use the graphiql tool when we reach the /graphql link
 }));
 
-app.listen(_constants.PORT, function () {
+app.listen(process.env.PORT || _constants.PORT, function () {
   console.log('App is listening on port ' + _constants.PORT);
 });
