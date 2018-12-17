@@ -11,7 +11,7 @@ mongoose.connection.once('open', ()=>{
   logger.info(`Connection to database successful`)
 })
 
-app.use('/graphql', graphqlHTTP({
+app.use('/' || '/graphql', graphqlHTTP({
   schema,
   graphiql: true //to use the graphiql tool when we reach the /graphql link
 }))

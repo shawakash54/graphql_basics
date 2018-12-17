@@ -30,7 +30,7 @@ _database2.default.connection.once('open', function () {
   _logger2.default.info('Connection to database successful');
 });
 
-app.use('/graphql', (0, _expressGraphql2.default)({
+app.use('/' || '/graphql', (0, _expressGraphql2.default)({
   schema: _schema2.default,
   graphiql: true //to use the graphiql tool when we reach the /graphql link
 }));
