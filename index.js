@@ -16,6 +16,6 @@ app.use('/graphql', graphqlHTTP({
   graphiql: true //to use the graphiql tool when we reach the /graphql link
 }))
 
-app.listen(PORT,()=>{
+app.listen(process.env.PORT || PORT,()=>{
   console.log(`App is listening on port ${PORT}`)
 })
