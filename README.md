@@ -1,4 +1,5 @@
 # GraphQL
+## Link: `https://graphql-basics.herokuapp.com`
 With GraphQL we don't need to have multiple end points for a particular resource depending on a client.
 Concept used by NetFlix was to have a backends for frontends. It can now be replaced by a single endpoint - /graphql
 We also don't need to make multiple requests for resources anymore. We can fetch in one request only.
