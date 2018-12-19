@@ -4,8 +4,12 @@ import graphqlHTTP from 'express-graphql'
 import schema from './app/schemas/schema'
 import mongoose from './config/database'
 import logger from './lib/logger'
+import allowCORS from './config/cors'
 
 const app = express()
+
+//allowing cross origin requests
+allowCORS(app)
 
 mongoose.connection.once('open', ()=>{
   logger.info(`Connection to database successful`)
