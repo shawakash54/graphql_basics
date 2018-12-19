@@ -2,7 +2,7 @@ import cors from 'cors'
 
 //allow cross origin request
 const allowCORS = (app) => {
-  app.use(cors)
+  app.use(cors())
 }
 
 export default allowCORS
