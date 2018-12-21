@@ -94,8 +94,8 @@ const RootQuery = new GraphQLObjectType({
         return Book.findById(args.id, (err, bookData) => {
           if (err)
             logger.error(`Error: ${err}`)
-            logger.info(`Fetching ${BOOK_TYPE} data`, JSON.stringify(bookData))
-            return bookData
+          logger.info(`Fetching ${BOOK_TYPE} data`, JSON.stringify(bookData))
+          return bookData
         })
         // logger.info(`Fetching ${BOOK_TYPE} data`, JSON.stringify(data))
         // return data
@@ -107,9 +107,12 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args){
         //code to get author details
         //var data = _.find(dummy_authors, {id: args.id})
-        var data = Author.findById(args.id)
-        logger.info(`Fetching ${AUTHOR_TYPE} data`, JSON.stringify(data))
-        return data
+        return Author.findById(args.id, (err, authorData) => {
+          if (err)
+            logger.error(`Error: ${err}`)
+          logger.info(`Fetching ${AUTHOR_TYPE} data`, JSON.stringify(authorData))
+          return authorData
+        })
       }
     },
     books: {
@@ -117,7 +120,12 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args){
         //code to get list of all books
         //return dummy_books
-        return Book.find({})
+        return Book.find({}, (err, data) => {
+          if(err)
+            logger.error(`Error: ${err}`)
+          logger.info(`Fetching all books data`, JSON.stringify(data))
+          return data
+        })
       }
     },
     authors: {
@@ -125,7 +133,12 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args){
         //code to get list of all authors
         //return dummy_authors
-        return Author.find({})
+        return Author.find({}, (err, data) => {
+          if(err)
+            logger.error(`Error: ${err}`)
+          logger.info(`Fetching all authors data`, JSON.stringify(data))
+          return data
+        })
       }
     }
   }
@@ -148,6 +161,7 @@ const Mutation =  new GraphQLObjectType({
           name: args.name,
           age: args.age
         })
+        logger.info(`addAuthor mutation: `, JSON.stringify(author))
         return author.save()
       }
     },
@@ -165,6 +179,7 @@ const Mutation =  new GraphQLObjectType({
           genre: args.genre,
           authorId: args.authorId
         })
+        logger.info(`addBook mutation: `, JSON.stringify(book))
         return book.save()
       }
     }
