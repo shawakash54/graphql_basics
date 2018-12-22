@@ -128,9 +128,11 @@ var RootQuery = new _graphql.GraphQLObjectType({
       resolve: function resolve(parent, args) {
         //code to get author details
         //var data = _.find(dummy_authors, {id: args.id})
-        var data = _models.Author.findById(args.id);
-        _logger2.default.info('Fetching ' + _constants.AUTHOR_TYPE + ' data', (0, _stringify2.default)(data));
-        return data;
+        return _models.Author.findById(args.id, function (err, authorData) {
+          if (err) _logger2.default.error('Error: ' + err);
+          _logger2.default.info('Fetching ' + _constants.AUTHOR_TYPE + ' data', (0, _stringify2.default)(authorData));
+          return authorData;
+        });
       }
     },
     books: {
@@ -138,7 +140,11 @@ var RootQuery = new _graphql.GraphQLObjectType({
       resolve: function resolve(parent, args) {
         //code to get list of all books
         //return dummy_books
-        return _models.Book.find({});
+        return _models.Book.find({}, function (err, data) {
+          if (err) _logger2.default.error('Error: ' + err);
+          _logger2.default.info('Fetching all books data', (0, _stringify2.default)(data));
+          return data;
+        });
       }
     },
     authors: {
@@ -146,7 +152,11 @@ var RootQuery = new _graphql.GraphQLObjectType({
       resolve: function resolve(parent, args) {
         //code to get list of all authors
         //return dummy_authors
-        return _models.Author.find({});
+        return _models.Author.find({}, function (err, data) {
+          if (err) _logger2.default.error('Error: ' + err);
+          _logger2.default.info('Fetching all authors data', (0, _stringify2.default)(data));
+          return data;
+        });
       }
     }
   }
@@ -168,6 +178,7 @@ var Mutation = new _graphql.GraphQLObjectType({
           name: args.name,
           age: args.age
         });
+        _logger2.default.info('addAuthor mutation: ', (0, _stringify2.default)(author));
         return author.save();
       }
     },
@@ -185,6 +196,7 @@ var Mutation = new _graphql.GraphQLObjectType({
           genre: args.genre,
           authorId: args.authorId
         });
+        _logger2.default.info('addBook mutation: ', (0, _stringify2.default)(book));
         return book.save();
       }
     }
